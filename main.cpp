@@ -3,6 +3,7 @@
 #include <thread>
 #include <array>
 #include "FileDAO.cpp"
+#include "Reader.cpp"
 
 using namespace std;
 
@@ -11,25 +12,16 @@ int main (){
 
     //this_thread::sleep_for(chrono::seconds(185));
     FileDAO files = FileDAO();
-    cout << "testando, chamando getFilesForPhilosophers pela primeira vez \n";
-    array<Archive *,2> livros = files.getFilesForPhilosophers();
-    Archive* livro = livros[0];
-    cout << "arquivo com id:" << livro->getId() << ", nome:" << livro->getName() << endl;
-    livro = livros[1];
-    cout << "arquivo com id:" << livro->getId() << ", nome:" << livro->getName() << endl;
+    Reader reader1 = Reader(files);
+    Reader reader2 = Reader(files);
+    Reader reader3 = Reader(files);
     
-    cout << "testando, chamando getFilesForPhilosophers pela segunda vez \n";
-    livros = files.getFilesForPhilosophers();
-    livro = livros[0];
-    cout << "arquivo com id:" << livro->getId() << ", nome:" << livro->getName() << endl;
-    livro = livros[1];
-    cout << "arquivo com id:" << livro->getId() << ", nome:" << livro->getName() << endl;
-    
-    cout << "testando, chamando getFilesForPhilosophers pela terceira vez \n";
-    livros = files.getFilesForPhilosophers();
-    livro = livros[0];
-    cout << "arquivo com id:" << livro->getId() << ", nome:" << livro->getName() << endl;
-    livro = livros[1];
-    cout << "arquivo com id:" << livro->getId() << ", nome:" << livro->getName() << endl;
+    thread t = thread(reader1);
+    thread t = thread(reader2);
+    thread t = thread(reader3);
+    /*reader1.run();
+    reader2.run();
+    reader3.run();*/
+
     return 0;
 }

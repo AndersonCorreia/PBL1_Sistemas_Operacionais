@@ -16,12 +16,12 @@ int main (){
     Reader reader2 = Reader(files);
     Reader reader3 = Reader(files);
     
-    thread t = thread(reader1);
-    thread t = thread(reader2);
-    thread t = thread(reader3);
-    /*reader1.run();
-    reader2.run();
-    reader3.run();*/
-
+    thread t1 = thread(reader1);
+    thread t2 = thread(reader2);
+    thread t3 = thread(reader3);
+    t3.join();
+    t1.join();
+    t2.join();
+    
     return 0;
 }

@@ -17,7 +17,7 @@ class Reader {
                 id = id_static++;
         }
 
-        void run(){
+        void operator()(){
             Archive* Archive = file.getFileForReader();
             
             if ( Archive != NULL){
@@ -34,14 +34,14 @@ class Reader {
             string line;
 
             ifstream myfile(nome);
-            cout << "Reader " << this->id <<": iniciou a leitura do arquivo " << nome << ".\n";
+            printf("Reader %i: iniciou a leitura do arquivo %s \n", this->id, nome.c_str());
             if (myfile.is_open()) {
                 while ( getline (myfile,line) ) {
-                    cout << "Reader " << this->id << ":" << line << '\n';
+                    printf_s("Reader %i: %s.\n", this->id, line.c_str());
                 }
                 myfile.close();
             }
-            cout << "Reader " << this->id <<": terminou de ler o arquivo " << nome << ".\n";
+            printf("Reader %i: terminou de ler o arquivo %s \n", this->id, nome.c_str());
         }
 };
 

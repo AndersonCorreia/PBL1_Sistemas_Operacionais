@@ -4,24 +4,36 @@
 #include <array>
 #include "FileDAO.cpp"
 #include "Reader.cpp"
-
+#include "Writer.cpp"
+#include <vector>
 using namespace std;
 
 int main (){
     srand(time(NULL));//usando o tempo atual como semente dos numeros aleatorios
-
-    //this_thread::sleep_for(chrono::seconds(185));
+    int qtd_readers = (rand() % 5) + 1;
+    int qtd_writers = (rand() % 5) + 1;
+    Reader readers[qtd_readers];
+    Writer writers[qtd_writers];
     FileDAO files = FileDAO();
-    Reader reader1 = Reader(files);
-    Reader reader2 = Reader(files);
-    Reader reader3 = Reader(files);
+    vector<thread *> threads;
     
-    thread t1 = thread(reader1);
-    thread t2 = thread(reader2);
-    thread t3 = thread(reader3);
-    t3.join();
-    t1.join();
-    t2.join();
-    
+    thread* t;
+    cout << "Quantidade de leitores: " << qtd_readers << "\n Quantidade de escritores: " << qtd_writers << "\n";
+    for (int i = 0; i < qtd_readers; i++)
+    {
+        readers[i] = Reader(&files);
+        t = new thread(readers[i]);
+        threads.push_back(t);
+    }
+    for (int i = 0; i < qtd_writers; i++)
+    {
+        writers[i] = Writer(&files);
+        t = new thread(writers[i]);
+        threads.push_back(t);
+    }
+    for (int i =0; i < threads.size(); i++){
+        threads[i]->join();
+    }
+
     return 0;
 }

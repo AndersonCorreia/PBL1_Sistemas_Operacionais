@@ -12,6 +12,8 @@ class FileDAO {
         int semaphore[3] = {1, 1, 1};
         //valores dos semaforos: 0-Desatualizado, 1-atualizado, 2-bloqueado para escrita
         int mutex = 1;
+        int mutex_readers = 1;
+        int rc;
 
     public:
 
@@ -23,18 +25,23 @@ class FileDAO {
         
         Archive* getFileForReader(){
             
-            if ( mutex == 0){
+            if ( mutex == 0 or mutex_readers == 0){
                 return NULL;
             }
-
+            rc++;
             int i = rand() % 3;
 
             return Files[i];
         }
+        
+        void completeReading(){
+            rc--;
+        }
 
         Archive* getFileForWriter(){
             
-            if ( mutex == 0){
+            if ( mutex == 0 or rc > 0){
+                mutex_readers = 0;
                 return NULL;
             }
             mutex = 0;
@@ -58,6 +65,7 @@ class FileDAO {
 
             if(synced){
                 mutex = 1;
+                mutex_readers = 1;
             }
         }
 

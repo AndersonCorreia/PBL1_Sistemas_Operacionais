@@ -7,27 +7,33 @@ using namespace std;
 class Reader {
 
     private:
-        FileDAO file;
+        FileDAO* file;
         int id;
         static int id_static;
         
-    public: 
-        Reader(FileDAO DAO) {
+    public:
+        Reader(){};
+
+        Reader(FileDAO* DAO) {
             file = DAO;
                 id = id_static++;
         }
 
         void operator()(){
-            Archive* Archive = file.getFileForReader();
-            
-            if ( Archive != NULL){
-                readFile( Archive->getName() );
+            while(true){
+                Archive* Archive = file->getFileForReader();
+
+                if ( Archive != NULL){
+                    readFile( Archive->getName() );
+                    file->completeReading();
+                }
+                else
+                {   
+                    int sec = rand() % 10;
+                    printf("Reader %i: sleep \n", this->id);
+                    this_thread::sleep_for(chrono::seconds(sec));
+                }
             }
-            else
-            {
-                this_thread::sleep_for(chrono::seconds(185));
-            }
-            
         }
 
         void readFile(string nome){

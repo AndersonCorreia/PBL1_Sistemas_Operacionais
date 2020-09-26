@@ -5,6 +5,7 @@
 #include "FileDAO.cpp"
 #include "Reader.cpp"
 #include "Writer.cpp"
+#include "Philosophers.cpp"
 #include <vector>
 using namespace std;
 
@@ -14,6 +15,7 @@ int main (){
     int qtd_writers = (rand() % 5) + 1;
     Reader readers[qtd_readers];
     Writer writers[qtd_writers];
+    Philopher philosophers[5];
     FileDAO files = FileDAO();
     vector<thread *> threads;
     
@@ -29,6 +31,12 @@ int main (){
     {
         writers[i] = Writer(&files);
         t = new thread(writers[i]);
+        threads.push_back(t);
+    }
+    for (int i = 0; i < 5; i++)
+    {
+        philosophers[i] = Philosopher(&files);
+        t = new thread(philosophers[i]);
         threads.push_back(t);
     }
     for (int i =0; i < threads.size(); i++){

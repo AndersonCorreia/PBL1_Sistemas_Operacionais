@@ -82,15 +82,19 @@ class FileDAO {
             return archives;
         }
 
-    private:
+        int getSemaphore(int i){
+
+            return semaphore[i];
+        }
+
         void up(int index){
-            if (semaphore[index] == 2 ){
+            if (semaphore[index] < 2 ){
                 semaphore[index]++;
             } 
         }
 
         void down(int index){
-            if (semaphore[index] == 0 ){
+            if (semaphore[index] > 0 ){
                 semaphore[index]--;
             }
         }

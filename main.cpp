@@ -15,26 +15,23 @@ int main (){
     int qtd_writers = (rand() % 5) + 1;
     Reader readers[qtd_readers];
     Writer writers[qtd_writers];
-    Philopher philosophers[5];
+    Philosopher philosophers[5];
     FileDAO files = FileDAO();
     vector<thread *> threads;
     
     thread* t;
     cout << "Quantidade de leitores: " << qtd_readers << "\n Quantidade de escritores: " << qtd_writers << "\n";
-    for (int i = 0; i < qtd_readers; i++)
-    {
+    for (int i = 0; i < qtd_readers; i++){
         readers[i] = Reader(&files);
         t = new thread(readers[i]);
         threads.push_back(t);
     }
-    for (int i = 0; i < qtd_writers; i++)
-    {
+    for (int i = 0; i < qtd_writers; i++){
         writers[i] = Writer(&files);
         t = new thread(writers[i]);
         threads.push_back(t);
     }
-    for (int i = 0; i < 5; i++)
-    {
+    for (int i = 0; i < 5; i++){
         philosophers[i] = Philosopher(&files);
         t = new thread(philosophers[i]);
         threads.push_back(t);

@@ -7,7 +7,7 @@ using namespace std;
 class Reader {
 
     private:
-        FileDAO* file;
+        FileDAO* fileDAO;
         int id;
         static int id_static;
         
@@ -15,21 +15,21 @@ class Reader {
         Reader(){};
 
         Reader(FileDAO* DAO) {
-            file = DAO;
+            fileDAO = DAO;
                 id = id_static++;
         }
 
         void operator()(){
             while(true){
-                Archive* Archive = file->getFileForReader();
+                Archive* Archive = fileDAO->getFileForReader();
 
                 if ( Archive != NULL){
                     readFile( Archive->getName() );
-                    file->completeReading();
+                    fileDAO->completeReading();
                 }
                 else
                 {   
-                    int sec = rand() % 10;
+                    int sec = rand() % 25 + 25;
                     printf("Reader %i: sleep \n", this->id);
                     this_thread::sleep_for(chrono::seconds(sec));
                 }

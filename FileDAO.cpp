@@ -13,22 +13,24 @@ class FileDAO {
         //valores dos semaforos: 0-Desatualizado, 1-atualizado, 2-bloqueado para escrita
         int mutex = 1;
         int mutex_readers = 1;
-        int rc;
+        int rc = 0;
 
     public:
 
         FileDAO(){
-            Files[0] = new Archive("first.txt" , 0);
-            Files[1] = new Archive("second.txt" , 1);
-            Files[2] = new Archive("third.txt" , 2);
+            Files[0] = new Archive("zero.txt" , 0);
+            Files[1] = new Archive("one.txt" , 1);
+            Files[2] = new Archive("two.txt" , 2);
         }
         
         Archive* getFileForReader(){
             
             if ( mutex == 0 or mutex_readers == 0){
+                printf("BLoqueando Reader \n");
                 return NULL;
             }
             rc++;
+            printf("\nArquivo fornecido a um leitor, quantidade de leitores: %i \n", rc);
             int i = rand() % 3;
 
             return Files[i];
@@ -36,16 +38,19 @@ class FileDAO {
         
         void completeReading(){
             rc--;
+            printf("\nLeitores restantes: %i \n", rc);
         }
 
         Archive* getFileForWriter(){
             
             if ( mutex == 0 or rc > 0){
                 mutex_readers = 0;
+                printf("\nBLoqueando todos os Readers \n");
                 return NULL;
             }
             mutex = 0;
-            
+            printf("\nBLoqueando leitores e escritores \n");
+
             int i = rand() % 3;
             for ( int j=0; j<3; j++){
                 (i == j) ? up(j) : down(j);
@@ -54,7 +59,7 @@ class FileDAO {
             return Files[i];
         }
         
-        void allSynced(){
+        void allSynced(){//função para acordar leitores e escritores
             
             bool synced = true;
             for ( int j=0; j<3; j++){
@@ -66,6 +71,7 @@ class FileDAO {
             if(synced){
                 mutex = 1;
                 mutex_readers = 1;
+                printf("\n Todos os arquivos estão sicronizado. \n");
             }
         }
 
@@ -75,6 +81,8 @@ class FileDAO {
             int j = rand() % 3;
             (j != i) ?  : j++;
             j = j % 3;
+
+            printf("Fornecendo arquivo %i e %i para um filosofo. \n\n", i, j);
 
             array<Archive*, 2> archives;
             archives[0] = Files[i];

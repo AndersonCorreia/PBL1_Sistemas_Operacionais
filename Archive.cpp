@@ -13,7 +13,7 @@ class Archive {
     public:
         Archive(){};
 
-        Archive(char* name, int id) {
+        Archive(string name, int id) {
             this->id = id;
             this->name = name;
         };

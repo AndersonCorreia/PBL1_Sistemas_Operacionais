@@ -3,7 +3,6 @@
 #include <thread>
 
 using namespace std;
-
 class Reader {
 
     private:
@@ -14,17 +13,17 @@ class Reader {
     public:
         Reader(){};
 
-        Reader(FileDAO* DAO) {
-            fileDAO = DAO;
+        Reader(FileDAO* dao) {
+            fileDAO = dao;
                 id = id_static++;
         }
 
         void operator()(){
             while(true){
-                Archive* Archive = fileDAO->getFileForReader();
+                Archive* archive = fileDAO->getFileForReader();
 
-                if ( Archive != NULL){
-                    readFile( Archive->getName() );
+                if ( archive != NULL){
+                    readFile( archive->getName() );
                     fileDAO->completeReading();
                 }
                 else
@@ -43,7 +42,7 @@ class Reader {
             printf("Reader %i: iniciou a leitura do arquivo %s \n", this->id, nome.c_str());
             if (myfile.is_open()) {
                 while ( getline (myfile,line) ) {
-                    printf_s("Reader %i: %s.\n", this->id, line.c_str());
+                    printf("Reader %i: %s.\n", this->id, line.c_str());
                 }
                 myfile.close();
             }

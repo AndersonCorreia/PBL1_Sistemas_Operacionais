@@ -1,6 +1,4 @@
-#include <stdio.h>
 #include <iostream>
-#include <thread>
 #include <array>
 #include "FileDAO.cpp"
 #include "Reader.cpp"

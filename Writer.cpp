@@ -9,7 +9,7 @@ class Writer {
     private:
         string content[4] = {"alguma coisa", "final fantasy", "soul eater", "texto aleatorio"};
         FileDAO* fileDAO;
-        Archive* Archive;
+        Archive* archive;
         int id;
         static int id_static;
         static int mutex;
@@ -17,8 +17,8 @@ class Writer {
     public:
         Writer(){};
 
-        Writer(FileDAO* DAO) {
-            fileDAO = DAO;
+        Writer(FileDAO* dao) {
+            fileDAO = dao;
             id = id_static++;
         }
 
@@ -26,16 +26,15 @@ class Writer {
             while(true){
                 if( mutex == 1){
                     mutex = 0;//entrando na zona critica
-                    Archive = fileDAO->getFileForWriter();
+                    archive = fileDAO->getFileForWriter();
                     mutex = 1;//saindo da zona critica
                 }
 
-                if ( Archive != NULL){
-                    writerFile( Archive->getName() );
-                    fileDAO->down( Archive->getId());
+                if ( archive != NULL){
+                    writerFile( archive->getName() );
+                    fileDAO->down( archive->getId());
                 }
-                else
-                {   
+                else {   
                     int sec = rand() % 25 + 25;
                     printf("Writer %i: sleep \n", this->id);
                     this_thread::sleep_for(chrono::seconds(sec));

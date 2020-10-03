@@ -15,7 +15,7 @@ class Reader {
 
         Reader(FileDAO* dao) {
             fileDAO = dao;
-                id = id_static++;
+            id = id_static++;
         }
 
         void operator()(){

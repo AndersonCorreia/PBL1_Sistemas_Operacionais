@@ -34,9 +34,7 @@ int main (){
         t = new thread(philosophers[i]);
         threads.push_back(t);
     }
-    for (int i =0; i < threads.size(); i++){
-        threads[i]->join();
-    }
+    threads[0]->join();
 
     return 0;
 }
